@@ -1,11 +1,30 @@
 ;(in-package #:qix)
 
+(defun string-make (count)
+  (make-array count :element-type 'character :adjustable t))
+
+(defun string-resize (array newlen)
+  (adjust-array array newlen))
+
+(defun string-copy (source target)
+  (loop for i from 0 to (1- (length source))
+     do (setf (aref target i)
+	      (aref source i)))
+  target)
 
 (defun string-insert (string text &optional (pos (1- (length string))))
   (concatenate 'string
-	       (subseq string 0 pos)
-	       text
-	       (subseq string pos (1- (length string)))))
+			     (subseq string 0 pos)
+			     text
+			     (subseq string pos (1- (length string)))))
+	       
+
+(defun split-on-newline (string &optional (pos 0))
+	   (let ((foundp (position #\newline test-test :start pos)))
+	     (if foundp
+		 (list* (subseq string pos foundp)
+			 (split-on-newline string (1+ foundp)))
+		 string)))
 
 (defun string-remove (string pos &optional (len 1))
   (let ((str-len (length string)))
@@ -16,6 +35,7 @@
 			  (subseq string 0 pos)
 			  (subseq string (+ pos len)))))))
 		    
+
 
 (defun list-insert-item (l new-item &optional (pos 0))
   (if (>= pos (length l))

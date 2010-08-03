@@ -1,7 +1,7 @@
 ;(in-package #:qix)
 
 
-(setq *handler-hash* (make-hash-table :test 'eq))
+(setq *handler-hash* (make-hash-table :test 'eq :weakness :key))
 
 (defun register-handler (obj handler)
   (setf (gethash obj *handler-hash*)
