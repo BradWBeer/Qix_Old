@@ -1,5 +1,5 @@
 (asdf:defsystem #:qix
-  :depends-on (lispbuilder-sdl lispbuilder-sdl-mixer cl-opengl cl-glu)
+  :depends-on (lispbuilder-sdl lispbuilder-sdl-mixer cl-opengl cl-glu cl-cairo2 pango)
   :version "0.0.1"
   :components ((:file "package")
 	       (:file "sdl-wrapper"
@@ -15,6 +15,8 @@
 	       (:file "mover"
 		      :depends-on ("package"))
 	       (:file "text-buffer"
+		      :depends-on ("package"))
+	       (:file "text-view"
 		      :depends-on ("package"))
 	       (:file "math"
 		      :depends-on ("package"))))

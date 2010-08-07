@@ -151,8 +151,7 @@
 (defmethod write-to-png ((this text-view) path &key)
   (cairo:surface-write-to-png (slot-value this 'cairo-surface) path))
 
-
-(defmethod draw-text ((this text-view) &key cursor-position)
+(defmethod draw-text ((this text-view) &optional cursor-position)
   (with-slots ((csurf cairo-surface)
 	       (context cairo-context)
 	       (pcontext pango-context)
@@ -171,23 +170,90 @@
       (loop 
 	 with pos = 0
 	 for text in data
+	 for i from 0
 	 while (< pos (+ h (page-y this)))
 	 do (let ((attrs (pango_attr_list_new)))
 
 	      (cairo:move-to (page-x this) (- pos (page-y this)) context)
-	      (format t "move to ~A~%" (- pos (page-y this)))
+	      ;(format t "move to ~A~%" (- pos (page-y this)))
 	      
 	      (pango_layout_set_text layout text -1)
 	      	      (pango_layout_set_attributes layout attrs)
 	      (pango_layout_set_font_description layout desc)
 	      (pango_cairo_update_layout (get-cairo-context-pointer this) layout)
+	      				       
 	      (pango_cairo_show_layout (get-cairo-context-pointer this) layout)
+  
+	      (when (and cursor-position
+			 (= i (car cursor-position)))
+		(let ((rect (get-cursor-pos layout (if (second cursor-position)
+						       (second cursor-position)
+						       (length text)))))
+		  (cairo:with-context (context)
+		    (cairo:move-to (first rect)
+				   (+ pos (second rect)))
+		    (cairo:line-to (first rect)
+				   (+ pos (second rect) (fourth rect)))
+		    (cairo:stroke))))
+
 	      (multiple-value-bind (x y) (get-layout-size layout)
 		(incf pos y))
 	      (pango_attr_list_unref attrs)))
 
       (pango_font_description_free desc))
     csurf))
-	   
-	   
-	     
+
+
+(defmethod setup-layout ((this text-view) text &key)
+  (let* ((desc (pango_font_description_from_string (text-font this)))
+	 (layout (slot-value this 'pango-layout))
+	 (attrs (pango_attr_list_new)))
+    
+    (pango_layout_set_text layout text -1)
+    (pango_layout_set_attributes layout attrs)
+    (pango_layout_set_font_description layout desc)
+    (pango_cairo_update_layout (get-cairo-context-pointer this) layout)
+    
+    (pango_attr_list_unref attrs)
+    (pango_font_description_free desc)
+    
+    layout))
+
+
+(defmethod cursor-forward ((this text-view) cursor)
+  (let* ((line-number (car cursor))
+	 (index (second cursor))
+	 (text (nth line-number (data this))))
+    (when text
+      ;; If there is a cursor index use it...
+      (if (second cursor)
+	  (let* ((layout (setup-layout this text))
+		 (new-index (move-cursor-visually layout index)))
+	    (if (= index new-index)
+		;; end of line...if there is a next line else, return same place..
+		(if (nth (1+ line-number) (data this))
+		    (list (1+ line-number) 0)
+		    cursor)
+		;; return the new pos...
+		(list line-number new-index)))
+	  
+	  ;; otherwise go to the next line, if it exists...
+	  (when (nth (1+ line-number) (data this))
+	    (list (1+ line-number) 0))))))
+
+	
+(defmethod cursor-backward ((this text-view) cursor)
+    (let* ((line-number (car cursor))
+	   (index (second cursor)))
+      (if (zerop index)
+	  ;; the zero index...
+	  (if (zerop line-number)
+	      '(0 0)
+	      (list (1- line-number)
+		    (length (nth (1- line-number) (data this)))))
+
+	  (let* ((text (nth line-number (data this)))
+		 (layout (when text (setup-layout this text))))
+		 (when layout (list line-number (move-cursor-visually layout index :forward nil)))))))
+		 
+	
