@@ -1,5 +1,5 @@
 (asdf:defsystem #:qix
-  :depends-on (lispbuilder-sdl lispbuilder-sdl-mixer cl-opengl cl-glu cl-cairo2 pango trivial-gray-streams)
+  :depends-on (lispbuilder-sdl lispbuilder-sdl-mixer cl-opengl cl-glu)
   :version "0.0.1"
   :components ((:file "package")
 	       (:file "sdl-wrapper"
