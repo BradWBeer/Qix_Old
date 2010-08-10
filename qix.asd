@@ -19,4 +19,10 @@
 	       (:file "text-view"
 		      :depends-on ("package"))
 	       (:file "math"
-		      :depends-on ("package"))))
+		      :depends-on ("package"))
+	       (:file "thread-pipe"
+		      :depends-on ("package"))
+	       (:file "repl"
+		      :depends-on ("package" "thread-pipe"))))
+
+		      

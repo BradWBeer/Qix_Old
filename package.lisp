@@ -1,7 +1,7 @@
 (in-package :cl-user)
 
 (cl:defpackage #:qix
-  (:use #:cl #:pango :trivial-gray-streams)
+  (:use #:cl #:pango #:trivial-gray-streams)
     (:export
      ;; sdl-wrapper
      #:QIX-WIN
@@ -50,4 +50,8 @@
      #:RELEASE-PANGO-LAYOUT #:IMAGE-SURFACE-DATA 
 
      #:DRAW-TEXT #:WRITE-TO-PNG
+
+     #:READ-WHOLE-STRING-OR-NOTHING #:EVAL-STRING
+
+     #:QIX-PIPE
      ))
