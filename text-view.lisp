@@ -165,8 +165,8 @@
     (apply #'cairo:set-source-rgb (append (slot-value this 'text-color) (list context)))
 
     (let* ((desc (pango_font_description_from_string (text-font this))))
-      
-      (loop 
+
+      (loop
 	 with pos = 0
 	 for text in data
 	 for i from 0
@@ -175,14 +175,14 @@
 
 	      (cairo:move-to (page-x this) (- pos (page-y this)) context)
 	      ;(format t "move to ~A~%" (- pos (page-y this)))
-	      
+
 	      (pango_layout_set_text layout text -1)
 	      	      (pango_layout_set_attributes layout attrs)
 	      (pango_layout_set_font_description layout desc)
 	      (pango_cairo_update_layout (get-cairo-context-pointer this) layout)
-	      				       
+
 	      (pango_cairo_show_layout (get-cairo-context-pointer this) layout)
-  
+
 	      (when (and cursor-position
 			 (= i (car cursor-position)))
 		(let ((rect (get-cursor-pos layout (if (second cursor-position)
@@ -207,15 +207,15 @@
   (let* ((desc (pango_font_description_from_string (text-font this)))
 	 (layout (slot-value this 'pango-layout))
 	 (attrs (pango_attr_list_new)))
-    
+
     (pango_layout_set_text layout text -1)
     (pango_layout_set_attributes layout attrs)
     (pango_layout_set_font_description layout desc)
     (pango_cairo_update_layout (get-cairo-context-pointer this) layout)
-    
+
     (pango_attr_list_unref attrs)
     (pango_font_description_free desc)
-    
+
     layout))
 
 
@@ -235,12 +235,12 @@
 		    cursor)
 		;; return the new pos...
 		(list line-number new-index)))
-	  
+
 	  ;; otherwise go to the next line, if it exists...
 	  (when (nth (1+ line-number) (data this))
 	    (list (1+ line-number) 0))))))
 
-	
+
 (defmethod cursor-backward ((this text-view) cursor)
     (let* ((line-number (car cursor))
 	   (index (second cursor)))
@@ -254,5 +254,5 @@
 	  (let* ((text (nth line-number (data this)))
 		 (layout (when text (setup-layout this text))))
 		 (when layout (list line-number (move-cursor-visually layout index :forward nil)))))))
-		 
-	
+
+

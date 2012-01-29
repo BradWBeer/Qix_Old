@@ -32,7 +32,7 @@
 	(setf cl-opengl-bindings:*gl-get-proc-address* #'sdl-cffi::sdl-gl-get-proc-address)
 	(setf *gl-get-proc-address* #'sdl-cffi::sdl-gl-get-proc-address)
 
-			   
+
 	;; (setf cl-opengl-bindings:*gl-get-proc-address*
 	;;       #'sdl-cffi::sdl-gl-get-proc-address)
 	,(if on-init
@@ -41,7 +41,7 @@
 	  (sdl:with-events ()
 	    (:quit-event () t)
 	    (:video-expose-event () (sdl:update-display))
-	    (:VIDEO-RESIZE-EVENT (:W w :H h)  
+	    (:VIDEO-RESIZE-EVENT (:W w :H h)
 				 (sdl:resize-window w h)
 				 ,(if on-resize
 				      `(funcall ,on-resize w h)
@@ -76,7 +76,7 @@
 					 `(funcall ,on-mouseup button state x y)
 					 `(format t "on-mouseup: button ~A state ~A X ~A Y ~A~%"
 						  button state x y)))
-	    
+
 	    (:MOUSE-MOTION-EVENT (:STATE STATE :X X :Y Y :X-REL X-REL :Y-REL Y-REL)
 				 ,(if on-mousemove
 					 `(funcall ,on-mousemove state x y x-rel y-rel)
@@ -107,13 +107,13 @@
 					 `(funcall ,on-joyballmove which ball x-rel y-rel)
 					 `(format t "on-joyballmove: which ~A ball ~A x-rel ~A y-rel ~A~%"
 						  which ball x-rel y-rel)))
-				   
+
 	    (:USER-EVENT (:TYPE TYPE :CODE CODE :DATA1 DATA1 :DATA2 DATA2)
 			 	 ,(if on-user-event
 					 `(funcall ,on-user-event type code data1 data2)
 					 `(format t "on-user-event: TYPE ~A CODE ~A DATA1 ~A DATA2 ~A~%"
 						  type code data1 data2)))
-				    
+
 	    (:IDLE ()
 		   ,(if on-idle
 			`(funcall ,on-idle)

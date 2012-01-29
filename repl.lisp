@@ -1,7 +1,7 @@
 (defun read-whole-string-or-nothing (str)
   (let ((chars-read 0)
 	(strlen (length str)))
-    (handler-case 
+    (handler-case
 	(loop while (< chars-read strlen)
 	   collect (multiple-value-bind (exp len) (read-from-string (subseq str chars-read))
 		     (incf chars-read len)
@@ -27,7 +27,7 @@
 (defun eval-string (str)
   (let ((sexp (read-whole-string-or-nothing str)))
     (when sexp
-      (loop 
+      (loop
 	 with *standard-output* = (make-string-output-stream)
 	 with *error-output*    = (make-string-output-stream)
 	 for i in sexp
@@ -46,7 +46,7 @@
     (return-a-char (x) (lambda (x) x))))
 
 
-;; (with-retry () 
+;; (with-retry ()
 ;;   (let ((*standard-output* (make-string-output-stream))
 ;; 	(*error-output* (make-string-output-stream)))
 ;;     (list (eval (read))
@@ -55,11 +55,11 @@
 
 
 ;; (with-retry ()
-;;   (loop 
-;;      with last-call 
-;;      for cmd in  
+;;   (loop
+;;      with last-call
+;;      for cmd in
 ;;        (with-input-from-string (s "(print \"hello\") nil")
-;; 	 (loop 
+;; 	 (loop
 ;; 	    with end-of-file = (gensym)
 ;; 	    for i = (read s nil end-of-file)
 ;; 	    while (not (eql i end-of-file))
@@ -73,12 +73,12 @@
 ;;   (with-retry ()
 ;;     (let ((*standard-output* (make-string-output-stream))
 ;; 	  (*error-output* (make-string-output-stream)))
-;;       (list 
-;;        (loop 
-;; 	  with last-call 
-;; 	  for cmd in  
+;;       (list
+;;        (loop
+;; 	  with last-call
+;; 	  for cmd in
 ;; 	    (with-input-from-string (s str)
-;; 	      (loop 
+;; 	      (loop
 ;; 		 with end-of-file = (gensym)
 ;; 		 for i = (read s nil end-of-file)
 ;; 		 while (not (eql i end-of-file))
@@ -89,6 +89,6 @@
 ;;        (get-output-stream-string *error-output*)))))
 
 
-;; (handler-bind 
+;; (handler-bind
 ;;     ((warning (lambda (x) (print x) nil)))
 ;;   (eval '(progn (warn tmp) (print "helo"))))
