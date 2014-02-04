@@ -19,7 +19,7 @@
 
 (defun fire (object &rest e)
   (let ((handlers (gethash object *handler-hash*)))
-    (loop 
+    (loop
        for i in handlers
        do (setf e (apply i e))
        while e)))

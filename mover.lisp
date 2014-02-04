@@ -32,29 +32,29 @@
    (last-value
     :initform nil)))
 
-(defmethod initialize-instance :after ((this mover) &key ) 
+(defmethod initialize-instance :after ((this mover) &key )
 	   (with-slots (slope end-value start-value period) this
 	     (setf slope (/ (- end-value start-value) period))))
 	     ;(if start-now (start-mover this delay))))
 
-  
+
 (defmethod start-mover ((this mover) &key delay)
   (let ((now (/ (get-internal-real-time) internal-time-units-per-second)))
     (if delay
-	(setf (start-time this) (+ now delay)) 
+	(setf (start-time this) (+ now delay))
 	      (setf (start-time this) now))))
-	       
+
 
 (defmethod get-current-value ((this mover))
   (let ((now (/ (get-internal-real-time) internal-time-units-per-second)) (ret))
-    (setf ret 
+    (setf ret
 	  (if (> (start-time this) now)
 	      (start-value this)
 	      (if (and (not (repeat this))
 		       (< (+ (start-time this) (period this))
 			  now))
-		  (end-value this)     
-		  (rem (* (slot-value this 'slope) 
+		  (end-value this)
+		  (rem (* (slot-value this 'slope)
 			  (- now (start-time this)))
 		       (end-value this)))))
     (let ((retval (if (functor this)

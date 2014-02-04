@@ -9,7 +9,7 @@
     :initform nil)
    (diffuse
     :initform nil)
-   (specular    
+   (specular
     :initform nil)
    (emission
     :initform nil)))
@@ -69,7 +69,7 @@
     (if d
 	(gl:material (face this) :diffuse d))
 ;	(gl:material (face this) :diffuse (vector 0 0 0 1)))
-    (if s 
+    (if s
 	(gl:material (face this) :specular s))
 ;	(gl:material (face this) :specular (vector 0 0 0 1)))
     (if e

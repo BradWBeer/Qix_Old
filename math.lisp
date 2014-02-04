@@ -1,19 +1,19 @@
 (in-package #:qix)
 
-(defun rad->deg (x) 
+(defun rad->deg (x)
   (* 57.2957795 x))
 
-(defun deg->rad (x) 
+(defun deg->rad (x)
   (/ x 57.2957795))
 
 (defun law-of-cosines (a b c)
-  (let ((aa (* (- (* a a) 
+  (let ((aa (* (- (* a a)
 		  (* b b)
 		  (* c c))))
 	(bb (- (* 2 b c))))
     (if (zerop bb)
 	90
-	(rad->deg (acos (/ aa bb))))))			     
+	(rad->deg (acos (/ aa bb))))))
 
 
 (defun transpose (matrix)
@@ -47,7 +47,7 @@
   '(1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1))
 
 (defun make-translation-matrix (x y z)
-  (list 1 0 0 0 0 1 0 0 0 0 1 0 x y z 1))  
+  (list 1 0 0 0 0 1 0 0 0 0 1 0 x y z 1))
 
 (defun make-rotation-matrix (angle x y z)
   (let* ((s (sin (deg->rad angle)))
@@ -58,12 +58,12 @@
 	  (+ (* x y c1) (* z s))
 	  (- (* x z c1) (* y s))
 	  0
-		   
+
 	  (- (* x y c1) (* z s))
 	  (+ (* y y c1) c)
 	  (+ (* y z c1) (* x s))
 	  0
-		   
+
 	  (+ (* x z c1) (* y s))
 	  (- (* y z c1) (* x s))
 	  (+ (* z z c1) c)
@@ -84,7 +84,7 @@
       (nth 4 view-matrix)
       (nth 5 view-matrix)
       (nth 6 view-matrix)
-      0 
+      0
       (nth 8 view-matrix)
       (nth 9 view-matrix)
       (nth 10 view-matrix)
@@ -102,7 +102,7 @@
       (nth 4 view-matrix)
       (nth 5 view-matrix)
       (nth 6 view-matrix)
-      0 
+      0
       (nth 8 view-matrix)
       (nth 9 view-matrix)
       (nth 10 view-matrix)
@@ -156,41 +156,41 @@
 	  (+ (* v0 m1) (* v1 m5) (* v2 m9) (* v3 m13))
 	  (+ (* v0 m2) (* v1 m6) (* v2 m10) (* v3 m14))
 	  (+ (* v0 m3) (* v1 m7) (* v2 m11) (* v3 m15)))))
-		   
-	     
+
+
 (defun multmm (m n)
   (proclaim '(optimize (speed 3) (space 0) (debug 0)))
   (let ((m0 (NTH 0 M))
 	(m1 (NTH 1 M))
 	(m2 (NTH 2 M))
 	(m3 (NTH 3 M))
-	(m4 (NTH 4 M)) 
+	(m4 (NTH 4 M))
 	(m5 (NTH 5 M))
 	(m6 (NTH 6 M))
 	(m7 (NTH 7 M))
-	(m8 (NTH 8 M)) 
-	(m9 (NTH 9 M)) 
-	(m10 (NTH 10 M)) 
+	(m8 (NTH 8 M))
+	(m9 (NTH 9 M))
+	(m10 (NTH 10 M))
 	(m11 (NTH 11 M))
-	(m12 (NTH 12 M)) 
-	(m13 (NTH 13 M)) 
-	(m14 (NTH 14 M)) 
+	(m12 (NTH 12 M))
+	(m13 (NTH 13 M))
+	(m14 (NTH 14 M))
 	(m15 (NTH 15 M))
-	(n0 (NTH 0 N)) 
-	(n1 (NTH 1 N)) 
-	(n2 (NTH 2 N)) 
+	(n0 (NTH 0 N))
+	(n1 (NTH 1 N))
+	(n2 (NTH 2 N))
 	(n3 (NTH 3 N))
-	(n4 (NTH 4 N)) 
+	(n4 (NTH 4 N))
 	(n5 (NTH 5 N))
-	(n6 (NTH 6 N)) 
+	(n6 (NTH 6 N))
 	(n7 (NTH 7 N))
-	(n8 (NTH 8 N)) 
-	(n9 (NTH 9 N)) 
-	(n10 (NTH 10 N)) 
+	(n8 (NTH 8 N))
+	(n9 (NTH 9 N))
+	(n10 (NTH 10 N))
 	(n11 (NTH 11 N))
-	(n12 (NTH 12 N)) 
-	(n13 (NTH 13 N)) 
-	(n14 (NTH 14 N)) 
+	(n12 (NTH 12 N))
+	(n13 (NTH 13 N))
+	(n14 (NTH 14 N))
 	(n15 (NTH 15 N)))
 
     (list (+ (* m0 n0) (* m4 n1) (* m8 n2) (* m12 n3))

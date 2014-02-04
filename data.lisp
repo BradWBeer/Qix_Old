@@ -2,7 +2,7 @@
 
 (defmacro string-concat (&rest args)
   `(concatenate 'string ,@args))
-	 
+
 
 (defun split-on-newline (string)
 	   "Returns a list of substrings of string
@@ -34,13 +34,13 @@ if there weak-pointer-value an empty string between them."
 	       (subseq string pos (length string))))
 
 
-	       
+
 (defun string-list-insert (data str cursor)
   (let* ((newlist (split-on-newline str))
 	 (length-newlist (length newlist)))
     (cond ((= length-newlist 1)
 	   (setf (nth (first cursor) data) (string-insert (nth (first cursor) data) str (second cursor))))
-	   
+
 	  ((= length-newlist 2)
 	   (let ((broken-string (break-string (nth (first cursor) data) (second cursor))))
 	     (setf (nth (first cursor) data)
@@ -50,7 +50,7 @@ if there weak-pointer-value an empty string between them."
 			       (string-concat (second newlist)
 					      (second broken-string))
 			       (1+ (first cursor)))))
-	  
+
 	  ((> length-newlist 2)
 	   (let ((broken-string (break-string (nth (first cursor) data) (second cursor))))
 	     (setf (nth (first cursor) data)
@@ -63,21 +63,21 @@ if there weak-pointer-value an empty string between them."
 					  (1- (length newlist))) data)
 				  (second broken-string))))))
     data))
-	  
-   
+
+
 
 (defun string-remove (string pos &optional (len 1))
   (let ((str-len (length string)))
     (cond ((>= pos str-len)  string)
 	  ((>= (+ pos len) str-len) (subseq string 0 pos))
 	  ((zerop pos) (subseq string len))
-	  (t (concatenate 'string 
+	  (t (concatenate 'string
 			  (subseq string 0 pos)
 			  (subseq string (+ pos len)))))))
 
 (defun break-string (string pos)
 	   (list (subseq string 0 pos)
-		 (subseq string pos)))		    
+		 (subseq string pos)))
 
 
 (defun get-substring-list (data start &optional (end))
@@ -95,9 +95,9 @@ if there weak-pointer-value an empty string between them."
 		(t (format nil "~A~%~A~A"
 			   (subseq (nth start-line data) start-index)
 			   (format nil "~{~A~%~}" (loop for i from (1+ start-line) to (1- end-line)
-						     collect (nth i data))) 
-			   (subseq (nth end-line data) 0 end-index))))))))	   	   
-				  					  
+						     collect (nth i data)))
+			   (subseq (nth end-line data) 0 end-index))))))))
+
 
 (defun list-insert-item (l new-item &optional (pos 0))
   (if (>= pos (length l))
@@ -115,7 +115,7 @@ if there weak-pointer-value an empty string between them."
 	  (let* ((l (nthcdr pos lst))
 		 (old-car (car l))
 		 (old-cdr (cdr l)))
-	    
+
 	    (setf (car l) (car new-list))
 	    (setf (cdr l) (cdr (copy-list new-list)))
 	    (setf (cdr (last l)) (cons old-car old-cdr))
@@ -124,7 +124,7 @@ if there weak-pointer-value an empty string between them."
 (defun list-remove (lst pos)
   (let* ((l (nthcdr pos lst)))
     (if (cdr l)
-	(progn 
+	(progn
 	  (setf (car l) (cadr l))
 	  (setf (cdr l) (cddr l)))
 	(let ((l (nthcdr (1- pos) lst)))
@@ -132,4 +132,3 @@ if there weak-pointer-value an empty string between them."
 	    (setf (cdr l) nil))))
     lst))
 
-	   

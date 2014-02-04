@@ -20,10 +20,10 @@
 
 (defun get-enabled-lights ()
   (cons :color-material
-	(cons :lighting 
+	(cons :lighting
 	      (loop for l across *lights*
 		 if l collect (get-id l)))))
-  
+
 
 (defclass gl-light ()
   ((id
@@ -35,14 +35,14 @@
     :initform (vector 0 0 0 1))
    (diffuse
     :initform (vector 0 0 0 1))
-   (specular    
+   (specular
     :initform (vector 0 0 0 1))
    (enable
     :accessor enable
     :initform t
     :initarg :enable)))
-    
-    
+
+
 
 (defmethod initialize-instance :after ((this gl-light) &key)
   (lights-init)
@@ -58,10 +58,10 @@
 
 (defmethod release-light ((this gl-light))
   (setf (aref *lights* (slot-value this 'id)) nil))
-  
+
 (defmethod get-id ((this gl-light))
   (let ((index (slot-value this 'id)))
-    (if index 
+    (if index
 	(+ (slot-value this 'id) *light0*)
 	nil)))
 
